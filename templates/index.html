@@ -1,73 +1,241 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conversor de Divisas</title>
+
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #1e3c72, #2a5298);
         }
-        .converter-card {
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.95);
+
+        /* Barra de navegación */
+        .navbar {
+            background: rgba(255, 255, 255, 0.97);
+            padding: 15px 30px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.12);
         }
+
+        .navbar-brand {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1e3c72;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-brand:hover {
+            color: #2a5298;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+            color: #198754;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: #34495e;
+            margin-left: 15px;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #198754;
+        }
+
+        /* Contenido principal */
+        .main-content {
+            min-height: calc(100vh - 85px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 15px;
+        }
+
+        .converter-card {
+            width: 100%;
+            max-width: 440px;
+            border: none;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.96);
+            padding: 35px;
+        }
+
+        .converter-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #1e3c72;
+        }
+
+        .form-label {
+            font-weight: 500;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 10px;
+        }
+
+        .btn-convert {
+            background: #1e3c72;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn-convert:hover {
+            background: #2a5298;
+        }
+
         .result-box {
             font-size: 1.5rem;
-            font-weight: bold;
+            font-weight: 700;
             color: #198754;
+        }
+
+        @media (max-width: 576px) {
+            .navbar {
+                padding: 12px 15px;
+            }
+
+            .converter-card {
+                padding: 25px 20px;
+            }
         }
     </style>
 </head>
 
-<body class="d-flex justify-content-center align-items-center vh-100">
+<body>
 
-    <div class="card shadow-lg p-4 converter-card" style="width: 400px;">
-        <h2 class="text-center mb-4">💱 Conversor de Divisas</h2>
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
 
-        <form method="post">
-            <div class="mb-3">
-                <label class="form-label">Cantidad</label>
-                <input type="number" step="0.01" name="amount" 
-                       class="form-control form-control-lg" 
-                       placeholder="Introduce cantidad" required>
+            <!-- Logo y nombre -->
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-currency-exchange logo-icon"></i>
+                DivisaConvert
+            </a>
+
+            <!-- Menú responsive -->
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarMenu"
+                    aria-controls="navbarMenu"
+                    aria-expanded="false"
+                    aria-label="Abrir navegación">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Enlaces -->
+            <div class="collapse navbar-collapse" id="navbarMenu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">
+                            Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#conversor">
+                            Conversor
+                        </a>
+                    </li>
+                </ul>
             </div>
 
-            <div class="row mb-3">
-                <div class="col">
-                    <select name="from_currency" class="form-select">
-                        <option value="EUR">EUR €</option>
-                        <option value="USD">USD $</option>
-                        <option value="GBP">GBP £</option>
-                    </select>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="main-content" id="conversor">
+
+        <div class="card shadow-lg converter-card">
+
+            <h2 class="text-center mb-4 converter-title">
+                Conversor de Divisas
+            </h2>
+
+            <form method="post">
+
+                <div class="mb-4">
+                    <label for="amount" class="form-label">
+                        Cantidad
+                    </label>
+                    <input type="number"
+                           id="amount"
+                           step="0.01"
+                           name="amount"
+                           class="form-control form-control-lg"
+                           placeholder="Introduce cantidad"
+                           required>
                 </div>
-                <div class="col text-center align-self-center">
-                    →
-                </div>
-                <div class="col">
-                    <select name="to_currency" class="form-select">
-                        <option value="USD">USD $</option>
-                        <option value="EUR">EUR €</option>
-                        <option value="GBP">GBP £</option>
-                    </select>
-                </div>
-            </div>
 
-            <div class="d-grid">
-                <button type="submit" class="btn btn-primary btn-lg">
-                    Convertir
-                </button>
-            </div>
-        </form>
+                <div class="row mb-4 align-items-center">
+                    <div class="col">
+                        <select name="from_currency"
+                                class="form-select"
+                                aria-label="Divisa de origen">
+                            <option value="EUR">EUR €</option>
+                            <option value="USD">USD $</option>
+                            <option value="GBP">GBP £</option>
+                        </select>
+                    </div>
 
-        {% if result is not none %}
-            <div class="mt-4 text-center result-box">
-                {{ result }}
-            </div>
-        {% endif %}
-    </div>
+                    <div class="col-auto text-center">
+                        <i class="bi bi-arrow-left-right"></i>
+                    </div>
+
+                    <div class="col">
+                        <select name="to_currency"
+                                class="form-select"
+                                aria-label="Divisa de destino">
+                            <option value="USD">USD $</option>
+                            <option value="EUR">EUR €</option>
+                            <option value="GBP">GBP £</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit"
+                            class="btn btn-primary btn-lg btn-convert">
+                        <i class="bi bi-arrow-repeat me-2"></i>
+                        Convertir
+                    </button>
+                </div>
+
+            </form>
+
+            {% if result is not none %}
+                <div class="mt-4 text-center result-box">
+                    {{ result }}
+                </div>
+            {% endif %}
+
+        </div>
+    </main>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
